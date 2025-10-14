@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.6'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+ext {
+    pdfBoxVersion = '3.0.5'
+    itextVersion = '9.1.0'
+    itextPdfsweepVersion = '5.0.1'
+}
+
+group = 'br.ufms.pdf'
+version = '0.0.1-SNAPSHOT'
+description = 'pdf-redactor-service'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url = "https://repo.itextsupport.com/releases" }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0"
+
+    implementation "org.apache.pdfbox:pdfbox:$pdfBoxVersion"
+
+    // iText dependencies
+    implementation platform("com.itextpdf:itext-core:$itextVersion")
+    implementation "com.itextpdf:cleanup:$itextPdfsweepVersion"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
